@@ -43,3 +43,8 @@ a:visited {
 .add_form{
   color: black;
 }
+
+.join_meetup{
+  color: black;
+  padding: 20px;
+}

@@ -18,33 +18,37 @@ helpers do
   end
 end
 
-def set_current_user(user)
-  session[:user_id] = user.id
-end
-
-def authenticate!
-  unless signed_in?
-    flash[:notice] = 'You need to sign in if you want to do that!'
-    redirect '/'
+  def set_current_user(user)
+    session[:user_id] = user.id
   end
-end
 
-def field_empty?(field)
-  field == ''
-end
-
-def valid_form?(name, description, location)
-  if field_empty?(name)
-    flash.now[:notice] = 'Name cannot be empty'
-    false
-  elsif field_empty?(description)
-    flash.now[:notice] = 'Description cannot be empty'
-    false
-  elsif field_empty?(location)
-    flash.now[:notice] = 'Location cannot be empty'
-    false
+  def authenticate!
+    unless signed_in?
+      flash[:notice] = 'You need to sign in if you want to do that!'
+      redirect '/'
+    end
   end
-end
+
+  def field_empty?(field)
+    field == ''
+  end
+
+  def valid_form?(name, description, location)
+    if field_empty?(name)
+      flash.now[:notice] = 'Name cannot be empty'
+      false
+    elsif field_empty?(description)
+      flash.now[:notice] = 'Description cannot be empty'
+      false
+    elsif field_empty?(location)
+      flash.now[:notice] = 'Location cannot be empty'
+      false
+    end
+  end
+
+  def already_member?(user_id, meetup_id)
+    Membership.where(user_id: user_id, meetup_id: meetup_id).exists?
+  end
 
 get '/' do
   @meetups = Meetup.all.order(:name)
@@ -74,6 +78,7 @@ end
 
 get '/meetups/:id' do
   @meetup = Meetup.find(params[:id])
+  @already_member = already_member?(current_user.id, @meetup.id)
   erb :'meetups/show'
 end
 
@@ -99,5 +104,11 @@ post '/add' do
     redirect "/meetups/#{meetup.id}"
   end
 
+end
+
+post '/join' do
+  @fields = {user_id: params[:user_id], meetup_id: params[:meetup_id], role: params[:role]}
+  Membership.find_or_create_by(@fields)
+  redirect "/meetups/#{@fields[:meetup_id]}"
 end
 
