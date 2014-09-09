@@ -29,6 +29,23 @@ def authenticate!
   end
 end
 
+def field_empty?(field)
+  field == ''
+end
+
+def valid_form?(name, description, location)
+  if field_empty?(name)
+    flash.now[:notice] = 'Name cannot be empty'
+    false
+  elsif field_empty?(description)
+    flash.now[:notice] = 'Description cannot be empty'
+    false
+  elsif field_empty?(location)
+    flash.now[:notice] = 'Location cannot be empty'
+    false
+  end
+end
+
 get '/' do
   @meetups = Meetup.all.order(:name)
   erb :index
@@ -66,16 +83,21 @@ get '/add' do
 end
 
 post '/add' do
-  name = params[:name]
-  description = params[:description]
-  location = params[:location]
+  @name = params[:name]
+  @description = params[:description]
+  @location = params[:location]
 
+  if !valid_form?(@name, @description, @location)
+    erb :'meetups/add'
+  else
 
-  if !Meetup.exists?(name: name, description: description, location: location)
-    flash[:notice] = "You have created a new meetup."
+    if !Meetup.exists?(name: @name, description: @description, location: @location)
+      flash[:notice] = "You have created a new meetup."
+    end
+
+    meetup = Meetup.find_or_create_by(name: @name, description: @description, location: @location)
+    redirect "/meetups/#{meetup.id}"
   end
 
-  meetup = Meetup.find_or_create_by(name: name, description: description, location: location)
-  redirect "/meetups/#{meetup.id}"
 end
 

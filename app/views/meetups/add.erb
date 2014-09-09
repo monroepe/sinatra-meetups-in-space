@@ -1,8 +1,8 @@
 <h1>Create A Meetup!</h1>
 
 <form name = "new_meetup" action = "/add" method = "post">New Contact:
-  <input class = "add_form" type="text" placeholder="Name" name="name">
-  <input class = "add_form" type="text" placeholder="Location" name="location">
-  <input class = "add_form" type="text" placeholder="Description" name="description">
+  <input class = "add_form" type="text" placeholder="Name" value = "<%= @name %>" name="name">
+  <input class = "add_form" type="text" placeholder="Location" value = "<%= @location %>" name="location">
+  <input class = "add_form" type="text" placeholder="Description" value = "<%= @description %>" name="description">
   <input class = "add_form" type = "submit">
 </form>
