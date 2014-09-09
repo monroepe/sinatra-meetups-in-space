@@ -59,3 +59,23 @@ get '/meetups/:id' do
   @meetup = Meetup.find(params[:id])
   erb :'meetups/show'
 end
+
+get '/add' do
+  authenticate!
+  erb :'meetups/add'
+end
+
+post '/add' do
+  name = params[:name]
+  description = params[:description]
+  location = params[:location]
+
+
+  if !Meetup.exists?(name: name, description: description, location: location)
+    flash[:notice] = "You have created a new meetup."
+  end
+
+  meetup = Meetup.find_or_create_by(name: name, description: description, location: location)
+  redirect "/meetups/#{meetup.id}"
+end
+

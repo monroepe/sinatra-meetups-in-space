@@ -32,9 +32,14 @@ a:visited {
 .logo {
   display: inline-block;
   margin: 1em 0;
+  padding-right: 20px;
 }
 
 .flash {
   padding: 1em;
   background-color: #3B9089;
+}
+
+.add_form{
+  color: black;
 }
