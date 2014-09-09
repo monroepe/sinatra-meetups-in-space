@@ -30,6 +30,7 @@ def authenticate!
 end
 
 get '/' do
+  @meetups = Meetup.all.order(:name)
   erb :index
 end
 
@@ -52,4 +53,9 @@ end
 
 get '/example_protected_page' do
   authenticate!
+end
+
+get '/meetups/:id' do
+  @meetup = Meetup.find(params[:id])
+  erb :'meetups/show'
 end
