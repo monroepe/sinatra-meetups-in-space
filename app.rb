@@ -78,7 +78,11 @@ end
 
 get '/meetups/:id' do
   @meetup = Meetup.find(params[:id])
-  @already_member = already_member?(current_user.id, @meetup.id)
+
+  if signed_in?
+    @already_member = already_member?(current_user.id, @meetup.id)
+  end
+
   erb :'meetups/show'
 end
 
