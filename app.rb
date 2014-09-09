@@ -116,3 +116,8 @@ post '/join' do
   redirect "/meetups/#{@fields[:meetup_id]}"
 end
 
+post '/leave' do
+  @fields = {user_id: params[:user_id], meetup_id: params[:meetup_id], role: params[:role]}
+  Membership.where(@fields).destroy_all
+  redirect "/meetups/#{@fields[:meetup_id]}"
+end
