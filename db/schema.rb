@@ -25,8 +25,8 @@ ActiveRecord::Schema.define(version: 20140909195908) do
   end
 
   create_table "memberships", force: true do |t|
-    t.integer  "user_id",    null: false
-    t.integer  "meetup_id",  null: false
+    t.integer  "user_id"
+    t.integer  "meetup_id"
     t.string   "role",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"

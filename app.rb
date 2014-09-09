@@ -113,11 +113,14 @@ end
 post '/join' do
   @fields = {user_id: params[:user_id], meetup_id: params[:meetup_id], role: params[:role]}
   Membership.find_or_create_by(@fields)
+  flash[:notice] = "You have joined the meetup."
   redirect "/meetups/#{@fields[:meetup_id]}"
 end
 
 post '/leave' do
+  authenticate!
   @fields = {user_id: params[:user_id], meetup_id: params[:meetup_id], role: params[:role]}
   Membership.where(@fields).destroy_all
+  flash[:notice] = "You have left the meetup."
   redirect "/meetups/#{@fields[:meetup_id]}"
 end
