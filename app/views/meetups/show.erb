@@ -4,6 +4,15 @@
 
 <h3><%= @meetup.description %></h3>
 
+  <ul>
+    <% @members.each do |member| %>
+      <li>
+        <img src="<%= member.user.avatar_url %>" alt="Avatar" height="42" width="42">
+        <%= member.user.username %>
+      </li>
+      <%end%>
+  </ul>
+
 <% if current_user != nil && !@already_member%>
 <form name = "join_meetup" action = "/join" method = "post">
   <input type="hidden" value = "<%= current_user.id %>" name="user_id">

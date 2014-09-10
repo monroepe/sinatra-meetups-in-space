@@ -78,7 +78,7 @@ end
 
 get '/meetups/:id' do
   @meetup = Meetup.find(params[:id])
-
+  @members = Membership.where('meetup_id = ?', params[:id])
   if signed_in?
     @already_member = already_member?(current_user.id, @meetup.id)
   end
